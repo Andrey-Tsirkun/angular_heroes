@@ -1,0 +1,50 @@
+<h2>Registration</h2>
+<form class="row" novalidate name="userProfile" ng-controller="registrationCtrl">
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="userName">Name:</label>
+            <input id="userName"
+                   class="form-control"
+                   type="text"
+                   ng-model="user.name"
+                   name="addUserName"
+                   required>
+        </div>
+        <div class="form-group">
+            <label for="userPass">Password:</label>
+            <input id="userPass"
+                   class="form-control"
+                   type="password"
+                   ng-model="user.pass"
+                   name="addUserPass"
+                   required>
+        </div>
+        <div class="form-group">
+            <label for="userPassCheck">Confirm Password:</label>
+            <input id="userPassCheck"
+                   class="form-control"
+                   type="password"
+                   ng-model="user.passConfirm"
+                   name="addUserPassConf"
+                   ng-required="user.pass != user.passConfirm"
+                   pass-validate="user.pass"
+                   required>
+        </div>
+        <div class="form-group">
+            <label for="userEmail">Email:</label>
+            <input id="userEmail"
+                   class="form-control"
+                   type="email"
+                   ng-model="user.email"
+                   name="addUserEmail"
+                   required>
+            <span style="color:red" ng-if="userProfile.addUserEmail.$error.email">Not a Valid Email</span>
+        </div>
+        <input type="button"
+               class="btn btn-default form-inline"
+               value="Register"
+               ng-click="submitRegister(user)"
+               ng-disabled="userProfile.$invalid"/>
+        <input type="button" class="btn btn-default form-inline" value="Cancel" ng-click="user = {}"/>
+    </div>
+</form>
