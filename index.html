@@ -3,18 +3,37 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Main Page</title>
-    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body ng-controller="mainCtrl">
-<main class="container">
-    <nav class="nav navbar-nav"><a>Register</a><a>Login</a></nav>
-    <a href="#/ololo">Ololo</a>
-    <ng-view></ng-view>
-</main>
+{{loggedIn}}
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="#" class="navbar-brand">Home</a>
+        </div>
+        <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="#/registration" ng-if="!loggedIn">Registration</a></li>
+                <li><a href="#/login" ng-if="!loggedIn">LogIn</a></li>
+                <li><a href="#" ng-click="logout()" ng-if="loggedIn">LogOut</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="jumbotron">
+        <ng-view></ng-view>
+    </div>
+</div>
 </body>
-<script type="text/javascript" src="/bower_components/angular/angular.js"></script>
-<script type="text/javascript" src="/bower_components/angular-route/angular-route.js"></script>
-<script type="text/javascript" src="/bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
-<script type="text/javascript" src="/js/app.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular.js"></script>
+<script type="text/javascript" src="bower_components/angular-route/angular-route.js"></script>
+<script type="text/javascript" src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
+<script type="text/javascript" src="/app/partials/dataFactory.js"></script>
+<script type="text/javascript" src="/app/partials/registration/registrationCtrl.js"></script>
+<script type="text/javascript" src="/app/partials/login/loginCtrl.js"></script>
 </html>
