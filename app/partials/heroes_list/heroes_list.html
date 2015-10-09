@@ -1,0 +1,10 @@
+<div class="col-md-3">
+    <ul class="nav nav-sidebar ">
+        <li ng-repeat="hero in heroes">
+            <h3><a href="#" class="inline"
+                   ng-bind="hero.name"
+                   ui-sref="/home/{hero.id}"></a>
+            </h3>
+        </li>
+    </ul>
+</div>

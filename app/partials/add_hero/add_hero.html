@@ -1,0 +1,37 @@
+<h2>Add a New Hero</h2>
+<form novalidate name="addHero" class="row" ng-controller="add_heroCtrl">
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="heroName">Name</label>
+            <input id="heroName"
+                   class="form-control"
+                   type="text"
+                   ng-model="add.heroname"
+                   name="addHeroName"
+                   required>
+        </div>
+        <div class="form-group">
+            <label for="heroImgUrl">URL</label>
+            <input id="heroImgUrl"
+                   class="form-control"
+                   type="url"
+                   ng-model="add.herourl"
+                   name="addUrlName"
+                   ng-model-options="{ updateOn: 'blur' }"
+                   required>
+            <span style="color:red" ng-if="addHero.addUrlName.$error.url">Not a Valid URL</span>
+            <span style="color:red" ng-if="addHero.addHeroName.$dirty && (addHero.addUrlName.$error.required || addHero.addHeroName.$error.required)">Both fields are required</span>
+        </div>
+        <div ng-init="isDisabled = true">
+            <input type="button"
+                   class="btn btn-default form-inline"
+                   value="Add a New Hero"
+                   ng-click="submitAddForm(add.heroname, add.herourl)"
+                   ng-disabled="addHero.$invalid"/>
+            <input type="button" class="btn btn-default form-inline" value="Cancel" ng-click="cancelHeroForm()"/>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <img ng-src="{{add.herourl}}">
+    </div>
+</form>
