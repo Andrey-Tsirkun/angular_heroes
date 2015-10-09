@@ -29,8 +29,8 @@ app.factory('dataFactory', ['localStorageService', '$location', function (localS
     heroes.loggedIn = true;
   };
 
-  heroes.addHero = function (aid, heroName, heroUrl) {
-    heroes.list.push({id: uid, aid: aid, name: heroName, img: heroUrl});
+  heroes.addHero = function (heroName, heroUrl) {
+    heroes.list.push({id: heroes.list.length + 1,aid: this.getAll('current_user'), name: heroName, img: heroUrl});
     localStorageService.set('heroes', heroes.list);
   };
 
