@@ -1,3 +1,4 @@
+
 app.factory('dataFactory', ['localStorageService', '$location', function (localStorageService, $location) {
   var heroes = {},
       user = {};
@@ -9,11 +10,19 @@ app.factory('dataFactory', ['localStorageService', '$location', function (localS
     return localStorageService.get(val);
   };
 
+  heroes.getHeroById = function(id) {
+    var heroes = this.getAll('heroes');
+    for(var i = 0; i < heroes.length; i++) {
+      if (heroes[i].id == id) {
+        return heroes[i];
+      }
+    }
+  };
+
   heroes.setCurrentUser = function (id) {
     localStorageService.set('current_user', id)
   };
 
-  heroes.loggedIn = false;
   heroes.addUser = function (userName, userPass, userEmail) {
     var uid = localStorageService.get('current_user');
     if (uid) {

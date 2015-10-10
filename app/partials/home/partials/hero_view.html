@@ -1,8 +1,8 @@
-<div class="hero-item" ng-repeat="hero in heroes" ng-init="cnt = 0">
-    <h2 class="text-center" ng-bind="hero.name"></h2>
+<div class="hero-item" ng-init="cnt = 0">
+    <h2 class="text-center" ng-bind="currentHero.name"></h2>
 
     <div>
-        <img class="center-block" ng-src="{{hero.img}}">
+        <img class="center-block" ng-src="{{currentHero.img}}">
     </div>
     <div class="text-center">
         <button class="votebutton glyphicon glyphicon-thumbs-down btn-group inline"

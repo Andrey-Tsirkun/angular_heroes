@@ -7,24 +7,45 @@ app.config(function (/*$routeProvider, */localStorageServiceProvider, $stateProv
       .setStorageType('localStorage');
 
   $stateProvider
-      .state('home', {
+      /*.state('home', {
         url: '/home',
         views: {
           '': {
             templateUrl: '/app/partials/home/home.html'
-          }/*,
+          },
+          'heroesList@home': {
+           templateUrl: '/app/partials/heroes_list/heroes_list.html',
+           controller: 'heroes_listCtrl'
+          },
           'heroView@home': {
-            templateUrl: '/app/partials/home/partials/hero_view.html'
+            url: "/home/:heroId",
+            templateUrl: '/app/partials/home/partials/hero_view.html',
+            controller: 'hero_viewCtrl'
           }
-          'newsFeed@home': {
-            template: '666'
-          }*/
         }
+      })*/.state('home', {
+        url: "/home",
+        templateUrl: '/app/partials/home/home.html'
       })
-      .state('home.heroDetails', {
-        url: "/home/:heroId",
+      .state('heroes', {
+        url: "/heroes",
+        templateUrl: '/app/partials/heroes_list/heroes_list.html',
+        controller: 'heroes_listCtrl'
+      })
+      /*.state('heroes_list', {
+        url: "/heroeslist",
+        templateUrl: '/app/partials/heroes_list/heroes_list.html',
+        controller: 'heroes_listCtrl'
+      })*/
+      .state('heroes.heroDetails', {
+        url: "/heroDetails/:heroId",
         templateUrl: '/app/partials/home/partials/hero_view.html',
-        directive: 'hero_viewDirective'
+        controller: 'hero_viewCtrl'
+      })
+      .state('contacts.contactCard', {
+        url: '/card/:contactId',
+        controller: 'ContactCardController',
+        templateUrl: 'partials/ContactCard.html'
       })
       .state('/registration', {
         url: '/registration',
