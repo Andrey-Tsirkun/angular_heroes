@@ -9,9 +9,9 @@ app.factory('dataFactory', ['localStorageService', function (localStorageService
     return localStorageService.get(val);
   };
 
-  heroes.getHeroById = function(id) {
+  heroes.getHeroById = function (id) {
     var heroes = this.getAll('heroes');
-    for(var i = 0; i < heroes.length; i++) {
+    for (var i = 0; i < heroes.length; i++) {
       if (heroes[i].id == id) {
         return heroes[i];
       }
@@ -26,13 +26,11 @@ app.factory('dataFactory', ['localStorageService', function (localStorageService
     var users = this.getAll('users'),
         currentUser = this.getAll('current_user');
 
-    for(var i = 0; i < users.length; i++) {
+    for (var i = 0; i < users.length; i++) {
       if (users[i].id == currentUser) {
-        var currentUserObject = users[i];
+        return users[i];
       }
     }
-
-    return currentUserObject;
   };
 
   heroes.addUser = function (userName, userPass, userEmail) {
@@ -49,10 +47,10 @@ app.factory('dataFactory', ['localStorageService', function (localStorageService
     heroes.loggedIn = true;
   };
 
-  heroes.addVotedHeroes = function(id) {
+  heroes.addVotedHeroes = function (id) {
     var users = this.getAll('users'),
         currentUser = this.getAll('current_user');
-    for(var i = 0; i < users.length; i++) {
+    for (var i = 0; i < users.length; i++) {
       if (users[i].id == currentUser) {
         users[i].votedHeroes.push(id);
       }
@@ -61,13 +59,13 @@ app.factory('dataFactory', ['localStorageService', function (localStorageService
   };
 
   heroes.addHero = function (heroName, heroUrl) {
-    heroes.list.push({id: heroes.list.length + 1,aid: this.getAll('current_user'), name: heroName, img: heroUrl});
+    heroes.list.push({id: heroes.list.length + 1, aid: this.getAll('current_user'), name: heroName, img: heroUrl});
     localStorageService.set('heroes', heroes.list);
   };
 
   heroes.removeHero = function (id) {
     var heroes = this.getAll('heroes');
-    for(var i = 0; i < heroes.length; i++) {
+    for (var i = 0; i < heroes.length; i++) {
       if (heroes[i].id == id) {
         heroes.splice(i, 1);
       }

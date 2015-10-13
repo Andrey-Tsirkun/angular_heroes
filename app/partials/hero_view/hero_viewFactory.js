@@ -1,7 +1,6 @@
 app.factory('viewHeroFactory',
     ['localStorageService',
       '$cookies',
-      '$cookies',
       'dataFactory',
       function (localStorageService, $cookies, dataFactory) {
         var viewHero = {};
@@ -28,7 +27,7 @@ app.factory('viewHeroFactory',
         };
 
         viewHero.vote = function (id, type) {
-          if(!this.voted) {
+          if (!this.voted) {
             var current = this.getCookie(id);
             if (type == 'up') {
               $cookies.put(id, parseInt(current) + 1);
