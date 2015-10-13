@@ -1,15 +1,10 @@
-<div class="hero-item" ng-init="cnt = 0">
+<div class="hero-item">
     <h2 class="text-center" ng-bind="currentHero.name"></h2>
-
     <div>
         <img class="center-block" ng-src="{{currentHero.img}}">
     </div>
-    <div class="text-center">
-        <button class="votebutton glyphicon glyphicon-thumbs-down btn-group inline"
-                ng-click="cnt = cnt - 1"></button>
-        <strong class="votearea btn-group inline" ng-bind="cnt"
-                ng-class="{under: cnt < 0, up: cnt > 0}"></strong>
-        <button class="votebutton glyphicon glyphicon-thumbs-up btn-group inline"
-                ng-click="cnt = cnt + 1"></button>
-    </div>
+    <hero-vote class="row" ng-if="currentHero.aid == currentUser"></hero-vote>
+    <span class="alert-warning" ng-if="currentHero.aid != currentUser">
+        You can't vote for your own hero.
+    </span>
 </div>
