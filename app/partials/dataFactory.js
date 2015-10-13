@@ -28,9 +28,11 @@ app.factory('dataFactory', ['localStorageService', function (localStorageService
 
     for(var i = 0; i < users.length; i++) {
       if (users[i].id == currentUser) {
-        return users[i];
+        var currentUserObject = users[i];
       }
     }
+
+    return currentUserObject;
   };
 
   heroes.addUser = function (userName, userPass, userEmail) {

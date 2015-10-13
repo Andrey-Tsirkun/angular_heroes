@@ -15,36 +15,30 @@ app.factory('viewHeroFactory',
         };
 
         viewHero.voted = function (id) {
-          var currentUser = dataFactory.getCurrentUserObject;
+          var status = false,
+              currentUser = dataFactory.getCurrentUserObject();
+          console.warn(currentUser);
           for (var i = 0; i < currentUser.votedHeroes.length; i++) {
-            console.warn(currentUser);
+            console.warn(currentUser.votedHeroes);
             if (currentUser.votedHeroes[i] == id) {
-              return true;
+              status = true;
             }
           }
+          return status;
         };
 
         viewHero.vote = function (id, type) {
-          var current = this.getCookie(id);
-          if (type == 'up') {
-            $cookies.put(id, parseInt(current) + 1);
-          }
-          else {
-            $cookies.put(id, parseInt(current) - 1);
-          }
-
-          dataFactory.addVotedHeroes(id);
-        };
-
-        /*viewHero.voted = function (id) {
-          var currentUser = dataFactory.getCurrentUserObject;
-          for(var i = 0; i < currentUser.votedHeroes.length; i++) {
-            console.warn(currentUser);
-            if (currentUser.votedHeroes[i] == id) {
-              return true;
+          if(!this.voted) {
+            var current = this.getCookie(id);
+            if (type == 'up') {
+              $cookies.put(id, parseInt(current) + 1);
             }
+            else {
+              $cookies.put(id, parseInt(current) - 1);
+            }
+            dataFactory.addVotedHeroes(id);
           }
-        };*/
+        };
 
         return viewHero;
       }]);
