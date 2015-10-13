@@ -1,0 +1,8 @@
+<div class="hero-item">
+    <h2 class="text-center" ng-bind="currentHero.name"></h2>
+    <div>
+        <img class="center-block" ng-src="{{currentHero.img}}">
+    </div>
+    <hero-vote ng-if="currentHero.aid != currentUser"></hero-vote>
+    {{currentHero.name}}
+</div>

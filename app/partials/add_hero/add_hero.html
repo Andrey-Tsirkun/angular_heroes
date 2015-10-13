@@ -1,5 +1,10 @@
 <h2>Add a New Hero</h2>
-<form novalidate name="addHero" class="row" ng-controller="add_heroCtrl">
+<form novalidate
+      name="addHero"
+      class="row"
+      ng-controller="add_heroCtrl"
+      ng-submit="submitAddForm(add.heroname, add.herourl)"
+      enter-submit="submitAddForm(add.heroname, add.herourl)">
     <div class="col-md-3">
         <div class="form-group">
             <label for="heroName">Name</label>
@@ -8,30 +13,19 @@
                    type="text"
                    ng-model="add.heroname"
                    name="addHeroName"
-                   required>
+                   required
+                   focus-on-load>
         </div>
-        <div class="form-group">
-            <label for="heroImgUrl">URL</label>
-            <input id="heroImgUrl"
-                   class="form-control"
-                   type="url"
-                   ng-model="add.herourl"
-                   name="addUrlName"
-                   ng-model-options="{ updateOn: 'blur' }"
-                   required>
-            <span style="color:red" ng-if="addHero.addUrlName.$error.url">Not a Valid URL</span>
-            <span style="color:red" ng-if="addHero.addHeroName.$dirty && (addHero.addUrlName.$error.required || addHero.addHeroName.$error.required)">Both fields are required</span>
-        </div>
+        <image-preview></image-preview>
         <div ng-init="isDisabled = true">
             <input type="button"
+                   name="submitForm"
                    class="btn btn-default form-inline"
                    value="Add a New Hero"
                    ng-click="submitAddForm(add.heroname, add.herourl)"
-                   ng-disabled="addHero.$invalid"/>
+                   ng-disabled="addHero.$invalid"
+                   enter-submit="submitAddForm(add.heroname, add.herourl)"/>
             <input type="button" class="btn btn-default form-inline" value="Cancel" ng-click="cancelHeroForm()"/>
         </div>
-    </div>
-    <div class="col-md-9">
-        <img ng-src="{{add.herourl}}">
     </div>
 </form>

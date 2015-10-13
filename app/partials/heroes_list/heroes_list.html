@@ -1,10 +1,11 @@
 <div class="col-md-3">
     <ul class="nav nav-sidebar ">
         <li ng-repeat="hero in heroes">
-            <h3><a class="inline"
+            <h3 class="inline-block"><a class="inline"
                    ng-bind="hero.name"
                    ui-sref=".heroDetails({heroId:hero.id})"></a>
             </h3>
+            <div ng-if="currentUser == hero.aid" class="inline-block glyphicon glyphicon-remove" ng-click="removeHero(hero.id)"></div>
         </li>
     </ul>
 </div>
