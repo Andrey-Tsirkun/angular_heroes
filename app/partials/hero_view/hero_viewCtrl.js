@@ -12,11 +12,10 @@ angular.module('myApp').controller('hero_viewCtrl', ['$scope', 'currentHero', 'c
 
   $scope.vote = function (id, type) {
     viewHeroFactory.vote(id, type);
-
   };
 
   $scope.voted = function (id) {
-    viewHeroFactory.voted(id);
+    return viewHeroFactory.voted(id);
   };
 
   /*var getCookie = function (id) {

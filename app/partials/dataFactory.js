@@ -1,4 +1,4 @@
-app.factory('dataFactory', ['localStorageService', function (localStorageService) {
+app.factory('dataFactory', ['localStorageService', '$q', function (localStorageService, $q) {
   var heroes = {},
       user = {};
 
@@ -6,7 +6,16 @@ app.factory('dataFactory', ['localStorageService', function (localStorageService
   user.list = [];
 
   heroes.getAll = function (val) {
-    return localStorageService.get(val);
+    var deferred = $q.defer(),
+        b = localStorageService.get(val);
+    if(b) {
+      deferred.resolve(b);
+    }
+    else {
+      deferred.reject();
+    }
+
+    return deferred.promise;
   };
 
   heroes.getHeroById = function (id) {
@@ -34,17 +43,28 @@ app.factory('dataFactory', ['localStorageService', function (localStorageService
   };
 
   heroes.addUser = function (userName, userPass, userEmail) {
-    var uid = localStorageService.get('current_user');
-    if (uid) {
-      uid++;
-    }
-    else {
-      uid = 1;
-    }
-    user.list.push({id: uid, name: userName, pass: userPass, email: userEmail, votedHeroes: []});
+    this.getAll('users').then(function(data) {
+      user.list = data;
+      setUser(data, userName, userPass, userEmail);
+    }, function () {
+      setUser([], userName, userPass, userEmail);
+      console.warn('User list is empty.');
+    });
+
+    var setUser = function (userArray, userName, userPass, userEmail) {
+      //console.warn(userName, userPass, userEmail);
+      var timestamp = new Date().getTime();
+      userArray.push({id: timestamp, name: userName, pass: userPass, email: userEmail, votedHeroes: []});
+      localStorageService.set('users', userArray);
+      heroes.setCurrentUser(timestamp);
+      heroes.loggedIn = true;
+    };
+
+    /*var timestamp = new Date().getTime();
+    user.list.push({id: timestamp, name: userName, pass: userPass, email: userEmail, votedHeroes: []});
     localStorageService.set('users', user.list);
-    this.setCurrentUser(uid);
-    heroes.loggedIn = true;
+    this.setCurrentUser(timestamp);
+    heroes.loggedIn = true;*/
   };
 
   heroes.addVotedHeroes = function (id) {
@@ -59,6 +79,7 @@ app.factory('dataFactory', ['localStorageService', function (localStorageService
   };
 
   heroes.addHero = function (heroName, heroUrl) {
+    heroes.list = this.getAll('heroes');
     heroes.list.push({id: heroes.list.length + 1, aid: this.getAll('current_user'), name: heroName, img: heroUrl});
     localStorageService.set('heroes', heroes.list);
   };
@@ -70,7 +91,6 @@ app.factory('dataFactory', ['localStorageService', function (localStorageService
         heroes.splice(i, 1);
       }
     }
-    console.warn(heroes);
     heroes.list = heroes;
     localStorageService.set('heroes', heroes.list);
   };
