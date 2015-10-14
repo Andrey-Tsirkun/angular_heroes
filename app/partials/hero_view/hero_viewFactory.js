@@ -16,9 +16,7 @@ app.factory('viewHeroFactory',
         viewHero.voted = function (id) {
           var status = false,
               currentUser = dataFactory.getCurrentUserObject();
-          console.warn(currentUser);
           for (var i = 0; i < currentUser.votedHeroes.length; i++) {
-            console.warn(currentUser.votedHeroes);
             if (currentUser.votedHeroes[i] == id) {
               status = true;
             }
@@ -27,7 +25,9 @@ app.factory('viewHeroFactory',
         };
 
         viewHero.vote = function (id, type) {
-          if (!this.voted) {
+          var voted = this.voted(id);
+          console.warn(voted);
+          if (!voted) {
             var current = this.getCookie(id);
             if (type == 'up') {
               $cookies.put(id, parseInt(current) + 1);
