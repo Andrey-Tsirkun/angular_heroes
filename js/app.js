@@ -18,7 +18,9 @@ app.config(function (/*$routeProvider, */localStorageServiceProvider, $stateProv
             return dataFactory.getAll('heroes');
           },
           currentUser: function (dataFactory) {
-            return dataFactory.getAll('current_user');
+            dataFactory.getAll('current_user').then(function (data) {
+              return data;
+            });
           }
         }
       })
@@ -28,6 +30,7 @@ app.config(function (/*$routeProvider, */localStorageServiceProvider, $stateProv
         controller: 'hero_viewCtrl',
         resolve: {
           currentHero: function (dataFactory, $stateParams) {
+            //console.warn(dataFactory.getHeroById($stateParams.heroId));
             return dataFactory.getHeroById($stateParams.heroId);
           },
           currentUser: function (dataFactory) {
@@ -53,25 +56,38 @@ app.config(function (/*$routeProvider, */localStorageServiceProvider, $stateProv
       .state('add_hero', {
         url: '/add_hero',
         templateUrl: '/app/partials/add_hero/add_hero.html',
-        controller: 'add_heroCtrl'
-        /*resolve: {
-          security: ['$q', 'dataFactory', function($q, dataFactory){
-            if(dataFactory.getAll('current_user')){
-              console.warn(dataFactory.getAll('current_user'));
-              return $q.reject("Not Authorized");
-            }
-          }]
-        }*/
+        controller: 'add_heroCtrl',
+        resolve: {
+          authenticate: authenticate
+        }
+      })
+      .state('redirect', {
+        url: "/redirect",
+        templateUrl: '/app/partials/redirect/redirect.html'
       });
 
-  $urlRouterProvider.otherwise('/home'); // Need to refactor
+  function authenticate(dataFactory, $location) {
+    dataFactory.getAll('current_user').then(function () {
+      console.warn('You are logged in!');
+    }, function () {
+      $location.path('redirect');
+    });
+  }
+
+  $urlRouterProvider.otherwise('/home');
 });
 
-app.controller('mainCtrl', ['$scope', 'dataFactory', function ($scope, dataFactory) {
-  $scope.loggedIn = !!dataFactory.getAll('current_user');
+app.controller('mainCtrl', ['$scope', 'dataFactory', '$rootScope', function ($scope, dataFactory, $rootScope) {
   $scope.logout = function () {
     dataFactory.setCurrentUser(null);
     $scope.loggedIn = false;
-    //$scope.$apply();
   };
 }]);
+
+app.run(function ($rootScope, dataFactory) {
+  dataFactory.getAll('current_user').then(function () {
+    $rootScope.loggedIn = true;
+  }, function () {
+    $rootScope.loggedIn = false;
+  });
+});

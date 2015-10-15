@@ -1,4 +1,4 @@
-app.factory('dataFactory', ['localStorageService', '$q', function (localStorageService, $q) {
+;app.factory('dataFactory', ['localStorageService', '$q', function (localStorageService, $q) {
   var heroes = {},
       user = {};
 
@@ -8,7 +8,7 @@ app.factory('dataFactory', ['localStorageService', '$q', function (localStorageS
   heroes.getAll = function (val) {
     var deferred = $q.defer(),
         b = localStorageService.get(val);
-    if(b) {
+    if (b) {
       deferred.resolve(b);
     }
     else {
@@ -19,32 +19,43 @@ app.factory('dataFactory', ['localStorageService', '$q', function (localStorageS
   };
 
   heroes.getHeroById = function (id) {
-    var heroes = this.getAll('heroes');
-    for (var i = 0; i < heroes.length; i++) {
-      if (heroes[i].id == id) {
-        return heroes[i];
-      }
+    var deferred = $q.defer(),
+        b = localStorageService.get('heroes');
+    if (b) {
+      deferred.resolve(b);
     }
+    else {
+      deferred.reject();
+    }
+
+    return deferred.promise.then(function (data) {
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].id == id) {
+          return data[i];
+        }
+      }
+    });
   };
 
   heroes.setCurrentUser = function (id) {
-    localStorageService.set('current_user', id)
+    localStorageService.set('current_user', id);
   };
 
   heroes.getCurrentUserObject = function () {
-    var users = this.getAll('users'),
-        currentUser = this.getAll('current_user');
-
-    for (var i = 0; i < users.length; i++) {
-      if (users[i].id == currentUser) {
-        return users[i];
-      }
+    var deferred = $q.defer(),
+        b = localStorageService.get('users');
+    if (b) {
+      deferred.resolve(b);
     }
+    else {
+      deferred.reject();
+    }
+
+    return deferred.promise;
   };
 
   heroes.addUser = function (userName, userPass, userEmail) {
-    this.getAll('users').then(function(data) {
-      user.list = data;
+    this.getAll('users').then(function (data) {
       setUser(data, userName, userPass, userEmail);
     }, function () {
       setUser([], userName, userPass, userEmail);
@@ -52,47 +63,69 @@ app.factory('dataFactory', ['localStorageService', '$q', function (localStorageS
     });
 
     var setUser = function (userArray, userName, userPass, userEmail) {
-      //console.warn(userName, userPass, userEmail);
       var timestamp = new Date().getTime();
       userArray.push({id: timestamp, name: userName, pass: userPass, email: userEmail, votedHeroes: []});
       localStorageService.set('users', userArray);
       heroes.setCurrentUser(timestamp);
       heroes.loggedIn = true;
     };
+  };
 
-    /*var timestamp = new Date().getTime();
-    user.list.push({id: timestamp, name: userName, pass: userPass, email: userEmail, votedHeroes: []});
-    localStorageService.set('users', user.list);
-    this.setCurrentUser(timestamp);
-    heroes.loggedIn = true;*/
+  heroes.getUserStatus = function () {
+    return heroes.getAll('current_user').then(function () {
+      console.warn(11111);
+      return true;
+    }, function () {
+      console.warn(22222);
+      return false;
+    });
   };
 
   heroes.addVotedHeroes = function (id) {
-    var users = this.getAll('users'),
-        currentUser = this.getAll('current_user');
-    for (var i = 0; i < users.length; i++) {
-      if (users[i].id == currentUser) {
-        users[i].votedHeroes.push(id);
-      }
-    }
-    localStorageService.set('users', users);
+    this.getAll('users').then(function (users) {
+      console.warn(users.length);
+      heroes.getAll('current_user').then(function (current_user) {
+        for (var i = 0; i < users.length; i++) {
+          if (users[i].id == current_user) {
+            users[i].votedHeroes.push(id);
+          }
+        }
+        localStorageService.set('users', users);
+      });
+    });
   };
 
   heroes.addHero = function (heroName, heroUrl) {
-    heroes.list = this.getAll('heroes');
-    heroes.list.push({id: heroes.list.length + 1, aid: this.getAll('current_user'), name: heroName, img: heroUrl});
-    localStorageService.set('heroes', heroes.list);
+    this.getAll('heroes').then(function (heroesList) {
+      addHero(heroesList, heroName, heroUrl);
+    }, function () {
+      addHero([], heroName, heroUrl);
+      console.warn('Heroes list is empty.');
+    });
+
+    var addHero = function (heroesArray, heroName, heroUrl) {
+      heroes.getAll('current_user').then(function (current_user) {
+        heroesArray.push({id: heroesArray.length + 1, aid: current_user, name: heroName, img: heroUrl});
+        localStorageService.set('heroes', heroesArray);
+      });
+    };
   };
 
   heroes.removeHero = function (id) {
-    var heroes = this.getAll('heroes');
-    for (var i = 0; i < heroes.length; i++) {
-      if (heroes[i].id == id) {
-        heroes.splice(i, 1);
+    this.getAll('heroes').then(function (heroesList) {
+      removeHero(heroesList, id);
+    }, function () {
+      console.warn('Empty');
+    });
+
+    var removeHero = function (heroesList, id) {
+      for (var i = 0; i < heroesList.length; i++) {
+        if (heroesList[i].id == id) {
+          heroesList.splice(i, 1);
+        }
       }
-    }
-    heroes.list = heroes;
-    localStorageService.set('heroes', heroes.list);
+      localStorageService.set('heroes', heroesList);
+    };
   };
 
   heroes.removeItem = function (key) {

@@ -1,13 +1,15 @@
-angular.module('myApp').controller('loginCtrl', ['$scope', 'dataFactory', function($scope, dataFactory) {
-  var users = dataFactory.getAll('users');
-  $scope.submitLogin = function (val) {
-    for(var i = 0; i < users.length; i++) {
-      if (users[i].name == val.name && users[i].pass == val.pass) {
-        dataFactory.setCurrentUser(users[i].id);
-        $scope.userLogin = {};
+angular.module('myApp').controller('loginCtrl', ['$scope', 'dataFactory', '$rootScope', function($scope, dataFactory, $rootScope) {
+  dataFactory.getAll('users').then(function(data) {
+    $scope.submitLogin = function (val) {
+      for(var i = 0; i < data.length; i++) {
+        if (data[i].name == val.name && data[i].pass == val.pass) {
+          dataFactory.setCurrentUser(data[i].id);
+          $scope.userLogin = {};
+        }
       }
-    }
-    $scope.loggedIn = true;
-    //$scope.$apply();
-  }
+      $scope.loggedIn = true;
+    };
+  }, function () {
+
+  });
 }]);

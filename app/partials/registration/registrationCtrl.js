@@ -3,6 +3,5 @@ angular.module('myApp').controller('registrationCtrl', ['$scope', 'dataFactory',
     dataFactory.addUser(userData.name, userData.pass, userData.email);
     $scope.user = {};
     $scope.loggedIn = true;
-    //$scope.$apply();
   };
 }]);

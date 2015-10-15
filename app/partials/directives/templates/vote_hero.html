@@ -1,10 +1,10 @@
 <div class="text-center row">
-    <button class="votebutton glyphicon glyphicon-thumbs-down btn-group inline btn btn-success"
+    <button class="votebutton glyphicon glyphicon-thumbs-down btn-group inline btn btn-danger"
             ng-click="vote(currentHero.id, 'down')"
             ng-class="{disabled: voted(currentHero.id)}"></button>
     <strong class="votearea btn-group inline" ng-bind="cnt(currentHero.id)"
             ng-class="{under: cnt < 0, up: cnt > 0}"></strong>
-    <button class="votebutton glyphicon glyphicon-thumbs-up btn-group inline btn btn-danger"
+    <button class="votebutton glyphicon glyphicon-thumbs-up btn-group inline btn btn-success"
             ng-click="vote(currentHero.id, 'up')"
             ng-class="{disabled: voted(currentHero.id)}"></button>
     <div class="alert alert-warning fade in" ng-show="voted(currentHero.id)">

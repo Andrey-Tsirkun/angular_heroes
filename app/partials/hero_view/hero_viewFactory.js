@@ -1,9 +1,11 @@
-app.factory('viewHeroFactory',
+;app.factory('viewHeroFactory',
     ['localStorageService',
       '$cookies',
       'dataFactory',
       function (localStorageService, $cookies, dataFactory) {
-        var viewHero = {};
+        var viewHero = {},
+            users = [],
+            current_user = '';
 
         viewHero.getCookie = function (id) {
           var cnt = 0;
@@ -13,20 +15,26 @@ app.factory('viewHeroFactory',
           return cnt;
         };
 
-        viewHero.voted = function (id) {
-          var status = false,
-              currentUser = dataFactory.getCurrentUserObject();
-          for (var i = 0; i < currentUser.votedHeroes.length; i++) {
-            if (currentUser.votedHeroes[i] == id) {
-              status = true;
-            }
-          }
-          return status;
-        };
+        dataFactory.getAll('users').then(function (users) {
+          dataFactory.getAll('current_user').then(function (current_user) {
+            viewHero.voted = function (id) {
+              var status = false;
+              for (var i = 0; i < users.length; i++) {
+                if (users[i].id == current_user) {
+                  for (var c = 0; c < users[i].votedHeroes.length; c++) {
+                    if (users[i].votedHeroes[c] == id) {
+                      status = true;
+                    }
+                  }
+                }
+              }
+              return status;
+            };
+          });
+        });
 
         viewHero.vote = function (id, type) {
           var voted = this.voted(id);
-          console.warn(voted);
           if (!voted) {
             var current = this.getCookie(id);
             if (type == 'up') {

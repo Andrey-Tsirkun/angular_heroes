@@ -1,6 +1,6 @@
-angular.module('myApp').controller('hero_viewCtrl', ['$scope', 'currentHero', 'currentUser', '$cookies', 'dataFactory', 'viewHeroFactory', function ($scope, currentHero, currentUser, $cookies, dataFactory, viewHeroFactory) {
+;angular.module('myApp').controller('hero_viewCtrl', ['$scope', 'currentHero', 'currentUser', '$cookies', 'viewHeroFactory', function ($scope, currentHero, currentUser, $cookies, viewHeroFactory) {
   $scope.currentHero = currentHero;
-  $scope.currentUser = currentUser;
+  $scope.currentUser = currentUser ? currentUser : 0;
 
   var getCookie = function (id) {
     return viewHeroFactory.getCookie(id);
@@ -17,38 +17,4 @@ angular.module('myApp').controller('hero_viewCtrl', ['$scope', 'currentHero', 'c
   $scope.voted = function (id) {
     return viewHeroFactory.voted(id);
   };
-
-  /*var getCookie = function (id) {
-   var cnt = 0;
-   if ($cookies.get(id)) {
-   cnt = $cookies.get(id);
-   }
-   return cnt;
-   };
-
-   $scope.cnt = function(id) {
-   return getCookie(id);
-   };
-
-   $scope.vote = function (id, type) {
-   var current = getCookie(id);
-   if (type == 'up') {
-   $cookies.put(id, parseInt(current) + 1);
-   }
-   else {
-   $cookies.put(id, parseInt(current) - 1);
-   }
-
-   dataFactory.addVotedHeroes(id);
-   };
-
-   $scope.voted = function (id) {
-   var currentUser = dataFactory.getCurrentUserObject();
-   for(var i = 0; i < currentUser.votedHeroes.length; i++) {
-   if (currentUser.votedHeroes[i] == id) {
-   return true;
-   }
-   }
-   };*/
-
 }]);
