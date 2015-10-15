@@ -3,7 +3,9 @@ app.factory('viewHeroFactory',
       '$cookies',
       'dataFactory',
       function (localStorageService, $cookies, dataFactory) {
-        var viewHero = {};
+        var viewHero = {},
+            users = [],
+            current_user = '';
 
         viewHero.getCookie = function (id) {
           var cnt = 0;
@@ -13,12 +15,24 @@ app.factory('viewHeroFactory',
           return cnt;
         };
 
+        dataFactory.getAll('users').then(function(data){
+          users = data;
+        });
+
+        dataFactory.getAll('current_user').then(function(data){
+          current_user = data;
+        });
+
         viewHero.voted = function (id) {
-          var status = false,
-              currentUser = dataFactory.getCurrentUserObject();
-          for (var i = 0; i < currentUser.votedHeroes.length; i++) {
-            if (currentUser.votedHeroes[i] == id) {
-              status = true;
+          var status = false;
+          for(var i = 0; i < users.length; i++) {
+            if(users[i].votedHeroes) {
+              console.warn(users[i].votedHeroes);
+              for (var c = 0; c < users[i].votedHeroes.length; c++) {
+                if (users.votedHeroes[c] == id) {
+                  status = true;
+                }
+              }
             }
           }
           return status;

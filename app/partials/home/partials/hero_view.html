@@ -3,7 +3,7 @@
     <div>
         <img class="center-block" ng-src="{{currentHero.img}}">
     </div>
-    <hero-vote class="row" ng-if="currentHero.aid == currentUser"></hero-vote>
+    <hero-vote class="row" ng-if="currentHero.aid != currentUser"></hero-vote>
     <span class="alert-warning" ng-if="currentHero.aid != currentUser">
         You can't vote for your own hero.
     </span>

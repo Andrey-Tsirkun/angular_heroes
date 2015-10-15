@@ -3,6 +3,6 @@ angular.module('myApp').controller('heroes_listCtrl', function($scope, heroes, c
   $scope.currentUser = currentUser;
   $scope.removeHero = function(id) {
     dataFactory.removeHero(id);
-    $scope.heroes = dataFactory.getAll('heroes'); // Refactor this
+    $scope.heroes = dataFactory.getAll('heroes');
   };
 });
