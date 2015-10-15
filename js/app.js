@@ -30,6 +30,7 @@ app.config(function (/*$routeProvider, */localStorageServiceProvider, $stateProv
         controller: 'hero_viewCtrl',
         resolve: {
           currentHero: function (dataFactory, $stateParams) {
+            //console.warn(dataFactory.getHeroById($stateParams.heroId));
             return dataFactory.getHeroById($stateParams.heroId);
           },
           currentUser: function (dataFactory) {
