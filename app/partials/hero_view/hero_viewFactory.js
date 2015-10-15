@@ -1,4 +1,4 @@
-app.factory('viewHeroFactory',
+;app.factory('viewHeroFactory',
     ['localStorageService',
       '$cookies',
       'dataFactory',
@@ -15,32 +15,26 @@ app.factory('viewHeroFactory',
           return cnt;
         };
 
-        dataFactory.getAll('users').then(function(data){
-          users = data;
-        });
-
-        dataFactory.getAll('current_user').then(function(data){
-          current_user = data;
-        });
-
-        viewHero.voted = function (id) {
-          var status = false;
-          for(var i = 0; i < users.length; i++) {
-            if(users[i].votedHeroes) {
-              console.warn(users[i].votedHeroes);
-              for (var c = 0; c < users[i].votedHeroes.length; c++) {
-                if (users.votedHeroes[c] == id) {
-                  status = true;
+        dataFactory.getAll('users').then(function (users) {
+          dataFactory.getAll('current_user').then(function (current_user) {
+            viewHero.voted = function (id) {
+              var status = false;
+              for (var i = 0; i < users.length; i++) {
+                if (users[i].id == current_user) {
+                  for (var c = 0; c < users[i].votedHeroes.length; c++) {
+                    if (users[i].votedHeroes[c] == id) {
+                      status = true;
+                    }
+                  }
                 }
               }
-            }
-          }
-          return status;
-        };
+              return status;
+            };
+          });
+        });
 
         viewHero.vote = function (id, type) {
           var voted = this.voted(id);
-          console.warn(voted);
           if (!voted) {
             var current = this.getCookie(id);
             if (type == 'up') {

@@ -1,4 +1,4 @@
-angular.module('myApp').controller('loginCtrl', ['$scope', 'dataFactory', function($scope, dataFactory) {
+angular.module('myApp').controller('loginCtrl', ['$scope', 'dataFactory', '$rootScope', function($scope, dataFactory, $rootScope) {
   dataFactory.getAll('users').then(function(data) {
     $scope.submitLogin = function (val) {
       for(var i = 0; i < data.length; i++) {
@@ -9,5 +9,7 @@ angular.module('myApp').controller('loginCtrl', ['$scope', 'dataFactory', functi
       }
       $scope.loggedIn = true;
     };
+  }, function () {
+
   });
 }]);

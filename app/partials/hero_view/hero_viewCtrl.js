@@ -1,6 +1,6 @@
-angular.module('myApp').controller('hero_viewCtrl', ['$scope', 'currentHero', 'currentUser', '$cookies', 'dataFactory', 'viewHeroFactory', function ($scope, currentHero, currentUser, $cookies, dataFactory, viewHeroFactory) {
+;angular.module('myApp').controller('hero_viewCtrl', ['$scope', 'currentHero', 'currentUser', '$cookies', 'viewHeroFactory', function ($scope, currentHero, currentUser, $cookies, viewHeroFactory) {
   $scope.currentHero = currentHero;
-  $scope.currentUser = currentUser;
+  $scope.currentUser = currentUser ? currentUser : 0;
 
   var getCookie = function (id) {
     return viewHeroFactory.getCookie(id);
